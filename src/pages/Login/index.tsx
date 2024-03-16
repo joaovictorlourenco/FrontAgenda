@@ -4,6 +4,14 @@ import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+
+import { Label } from "@/components/ui/label";
+
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { create } from "zustand";
@@ -62,30 +70,50 @@ export default function index() {
   });
 
   const onSubmit = async (data: FormData) => {
-    const token = await loginUser(data.email, data.password);
-    console.log(token);
+    // const token = await loginUser(data.email, data.password);
+    // console.log(token);
+
+    navigate("/dashboard");
   };
 
   return (
-    <div className="mx-auto w-80">
+    <div className="mx-auto w-screen h-screen flex-col flex items-center justify-center">
       <img src={logo} alt="Logo" />
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-3.5 min-h-60"
+        className="flex flex-col gap-11 min-h-60 w-80"
       >
-        {errors.email && <p className="text-red-500">{errors.email.message}</p>}
+        <div className="flex flex-col gap-3 mb-4">
+          <div>
+            {errors.email && (
+              <p className="text-red-500">{errors.email.message}</p>
+            )}
+          </div>
 
-        <Input {...register("email")} placeholder="Email" />
-        <Input
-          {...register("password")}
-          type="password"
-          placeholder="Password"
-        />
+          <Label htmlFor="email">Email</Label>
+          <Input
+            {...register("email")}
+            placeholder="Seu email"
+            type="email"
+            className="h-11 w-full"
+          />
+          <Label htmlFor="email">Senha</Label>
+          <Input
+            {...register("password")}
+            type="password"
+            placeholder="Sua senha"
+            className="h-11 w-full"
+          />
 
-        <p className="group-hover:text-slate-500 cursor-pointer">
-          Ainda não tem cadastro?
-        </p>
-        <Button className="" type="submit">
+          <Button
+            variant="link"
+            className="hover:border-b-4 transition-transform h-6 cursor-pointer w-44"
+          >
+            Ainda não tem cadastro?
+          </Button>
+        </div>
+
+        <Button className="h-11" type="submit">
           Login
         </Button>
       </form>
