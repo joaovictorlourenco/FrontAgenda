@@ -1,6 +1,9 @@
 import Header from "@/components/Header";
+import tokenStore from "@/store/tokenStore";
 
 export default function index() {
+  const token = tokenStore((state) => state.token);
+
   return (
     <>
       <Header />

@@ -8,15 +8,27 @@ export const loginUser = async (email: string, password: string) => {
   try {
     const response = await api.post("/auth/login", { email, password });
 
-    console.log(response);
-
-    const { token } = response.data;
-
-    return token;
+    return response.data;
   } catch (error: any) {
-    console.log("Erro ao fazer login:", error.message);
+    return error;
+  }
+};
 
-    throw error;
+export const registerUser = async (
+  name: string,
+  email: string,
+  password: string
+) => {
+  try {
+    const response = await api.post("/auth/register", {
+      name,
+      email,
+      password,
+    });
+
+    return response;
+  } catch (error: any) {
+    return error;
   }
 };
 

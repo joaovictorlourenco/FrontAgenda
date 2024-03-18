@@ -4,11 +4,13 @@ import Dashboard from "./pages/Dashboard";
 import Servicos from "./pages/Veiculos";
 import Veiculos from "./pages/Veiculos";
 import Clientes from "./pages/Clientes";
+import Cadastro from "./pages/Cadastro";
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/servicos" element={<Servicos />} />
         <Route path="/clientes" element={<Clientes />} />
