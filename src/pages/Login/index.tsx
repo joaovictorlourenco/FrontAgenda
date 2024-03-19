@@ -12,10 +12,10 @@ import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import { loginUser } from "@/services/api";
+import { getUser, loginUser } from "@/services/user";
 import { useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import tokenStore from "@/store/tokenStore";
+import userStore from "@/store/userStore";
 
 const loginSchem = z.object({
   email: z.string().email(),
@@ -26,8 +26,6 @@ type FormData = z.infer<typeof loginSchem>;
 
 export default function index() {
   const navigate = useNavigate();
-
-  const setToken = tokenStore((state) => state.setToken);
 
   const [isLoading, setLoading] = useState(false);
 
@@ -85,7 +83,9 @@ export default function index() {
 
     const { access_token } = response;
 
-    setToken(access_token);
+    const { id, name, email: emailData } = await getUser(access_token, email);
+
+    userStore.setState({ token: access_token, id, name, email: emailData });
 
     navigate("/dashboard");
   };

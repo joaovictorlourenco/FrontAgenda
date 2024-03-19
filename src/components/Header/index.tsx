@@ -1,14 +1,8 @@
 import headerLogo from "@/assets/header-logo.svg";
 import { Button } from "@/components/ui/button";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export default function Header() {
-  const navigate = useNavigate();
-
-  const handleClick = (path: string) => {
-    navigate(path);
-  };
-
   return (
     <header className="flex content-center items-center border-zinc-200 w-screen border-b justify-between pr-4 pl-4">
       <img src={headerLogo} alt="header logo" />

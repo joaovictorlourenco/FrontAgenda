@@ -3,7 +3,7 @@ import logo from "@/assets/logo.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { registerUser } from "@/services/api";
+import { registerUser } from "@/services/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
