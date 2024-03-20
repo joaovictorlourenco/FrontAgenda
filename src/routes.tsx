@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Servicos from "./pages/Servicos";
@@ -6,6 +11,8 @@ import Veiculos from "./pages/Veiculos";
 import Clientes from "./pages/Clientes";
 import Cadastro from "./pages/Cadastro";
 import ProtectRoutes from "./pages/Protect";
+import { useEffect, useState } from "react";
+import userStore from "./store/userStore";
 
 function App() {
   return (
@@ -45,6 +52,8 @@ function App() {
             </ProtectRoutes>
           }
         />
+
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );

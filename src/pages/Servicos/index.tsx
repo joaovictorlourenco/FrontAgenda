@@ -38,7 +38,7 @@ export default function Servicos() {
     <>
       <Header />
 
-      <body className="h-full">
+      <div className="h-full">
         <div className="p-6 max-w-6xl mx-auto space-y-4">
           <h1 className="text-3xl font-bold">Serviço</h1>
           <div className="flex flex-col gap-2">
@@ -140,7 +140,7 @@ export default function Servicos() {
             </Table>
           </div>
         </div>
-      </body>
+      </div>
     </>
   );
 }

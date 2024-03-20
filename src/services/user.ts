@@ -29,9 +29,9 @@ export const registerUser = async (
 };
 
 export const validateToken = async (token: string) => {
+  console.log(token);
   try {
     const response = await api.post("/auth/validateToken", { token });
-
     if (response.status === 400) {
       return false;
     }
