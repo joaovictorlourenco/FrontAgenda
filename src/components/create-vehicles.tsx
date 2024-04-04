@@ -28,8 +28,8 @@ import yearOptions from "@/json/year.json";
 
 const createVehicleSchema = z.object({
   type: z.string(),
-  brand: z.string(),
-  model: z.string(),
+  brand: z.string().max(10),
+  model: z.string().max(10),
   year: z.string().max(4),
 });
 

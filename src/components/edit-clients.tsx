@@ -17,6 +17,8 @@ import { useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { formatCelular } from "@/utils/formatCelular";
+import { formatCpfCnpj } from "@/utils/formatCpfCnpj";
 
 const createClientSchema = z.object({
   name: z.string().max(255),
@@ -79,7 +81,16 @@ export function EditClient({ client }: { client: Client }) {
           <Label htmlFor="cpf" className="text-right">
             CPF
           </Label>
-          <Input {...register("cpf")} type="text" className="col-span-3" />
+          <Input
+            {...register("cpf")}
+            type="text"
+            onChange={(e) => {
+              const { value } = e.target;
+              e.target.value = formatCpfCnpj(value);
+            }}
+            maxLength={14}
+            className="col-span-3"
+          />
           {errors.cpf && (
             <span className="text-red-500 text-sm col-span-4">
               {errors.cpf.message}
@@ -94,6 +105,11 @@ export function EditClient({ client }: { client: Client }) {
           <Input
             {...register("cellphone")}
             type="text"
+            onChange={(e) => {
+              const { value } = e.target;
+              e.target.value = formatCelular(value);
+            }}
+            maxLength={15}
             className="col-span-3"
           />
         </div>

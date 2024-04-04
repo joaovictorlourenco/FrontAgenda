@@ -1,7 +1,6 @@
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Search, PlusCircle, XCircle, Edit } from "lucide-react";
+import { PlusCircle, Edit } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -10,23 +9,36 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { useQuery } from "@tanstack/react-query";
 import { getAllServices } from "@/services/services";
 import userStore from "@/store/userStore";
 import CreateService from "@/components/create-services";
 import ServicesFilter from "@/components/services-filter";
+import DeleteServices from "@/components/delet-services";
+import EditServices from "@/components/edit-services";
+
+type Service = {
+  id: string;
+  name: string;
+  description: string;
+  value: number;
+  customerId: string;
+  vehiclesId: string;
+  vehicles: {
+    id: string;
+    type: string;
+    brand: string;
+    model: string;
+    year: number;
+  };
+  customers: {
+    id: string;
+    name: string;
+    cpf: string;
+    cellphone: string;
+  };
+};
 
 export default function Servicos() {
   const { data: services } = useQuery({
@@ -70,24 +82,32 @@ export default function Servicos() {
                 <TableHead className="text-slate-900">Ações</TableHead>
               </TableHeader>
               <TableBody>
-                {Array.from({ length: 10 }).map((_, index) => {
+                {services?.map((service: Service) => {
                   return (
-                    <TableRow key={index}>
-                      <TableCell>Lavagem</TableCell>
-                      <TableCell>Lavagem completa</TableCell>
-                      <TableCell>$250.00</TableCell>
-                      <TableCell>Ana</TableCell>
-                      <TableCell>(34) 9997-29839</TableCell>
-                      <TableCell>Toyota</TableCell>
-                      <TableCell>Corolla</TableCell>
-                      <TableCell>2024</TableCell>
+                    <TableRow key={service.id}>
+                      <TableCell>{service.name}</TableCell>
+                      <TableCell>{service.description}</TableCell>
+                      <TableCell>
+                        {service.value.toLocaleString("pt-BR", {
+                          style: "currency",
+                          currency: "BRL",
+                        })}
+                      </TableCell>
+                      <TableCell>{service.customers.name}</TableCell>
+                      <TableCell>{service.customers.cellphone}</TableCell>
+                      <TableCell>{service.vehicles.brand}</TableCell>
+                      <TableCell>{service.vehicles.model}</TableCell>
+                      <TableCell>{service.vehicles.year}</TableCell>
                       <TableCell className="flex gap-1">
-                        <button>
-                          <Edit />
-                        </button>
-                        <button>
-                          <XCircle />
-                        </button>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <button>
+                              <Edit />
+                            </button>
+                          </DialogTrigger>
+                          <EditServices service={service} />
+                        </Dialog>
+                        <DeleteServices service={service} />
                       </TableCell>
                     </TableRow>
                   );
@@ -100,90 +120,3 @@ export default function Servicos() {
     </>
   );
 }
-// import Header from "@/components/Header";
-// import { Button } from "@/components/ui/button";
-// import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-
-// import {
-//   Table,
-//   TableBody,
-//   TableCell,
-//   TableHead,
-//   TableHeader,
-//   TableRow,
-// } from "@/components/ui/table";
-// import { getAllClients } from "@/services/clients";
-// import userStore from "@/store/userStore";
-
-// import { useQuery } from "@tanstack/react-query";
-
-// import { Edit, PlusCircle } from "lucide-react";
-
-// import CreateClientsDialog from "@/components/create-clients-dialog";
-// import { ClientsFilters } from "@/components/clients-filters";
-// import { DeleteClients } from "@/components/delete-clients";
-// import { EditClient } from "@/components/edit-clients";
-
-// export default function Clientes() {
-//   const { data: clients } = useQuery({
-//     queryKey: ["clients"],
-//     queryFn: () => getAllClients(userStore.getState().token),
-//   });
-
-//   return (
-//     <>
-//       <Header />
-//       <div className="h-full">
-//         <div className="p-6 max-w-6xl mx-auto space-y-4">
-//           <h1 className="text-3xl font-bold">Clientes</h1>
-//           <div className="flex flex-col gap-2">
-//             <div className="flex items-center justify-between">
-//               <ClientsFilters />
-
-//               <Dialog>
-//                 <DialogTrigger asChild>
-//                   <Button>
-//                     <PlusCircle className="w-4 h-4 mr-2" />
-//                     Novo Cliente
-//                   </Button>
-//                 </DialogTrigger>
-
-//                 <CreateClientsDialog />
-//               </Dialog>
-//             </div>
-//             <Table className="border rounded-lg p-2">
-//               <TableHeader>
-//                 <TableHead className="text-slate-900">Nome</TableHead>
-//                 <TableHead className="text-slate-900">CPF</TableHead>
-//                 <TableHead className="text-slate-900">Telefone</TableHead>
-//                 <TableHead className="text-slate-900">Ações</TableHead>
-//               </TableHeader>
-//               <TableBody>
-//                 {clients?.map((client) => {
-//                   return (
-//                     <TableRow key={client.id}>
-//                       <TableCell>{client.name}</TableCell>
-//                       <TableCell>{client.cpf}</TableCell>
-//                       <TableCell>{client.cellphone}</TableCell>
-//                       <TableCell className="flex gap-1">
-//                         <Dialog>
-//                           <DialogTrigger asChild>
-//                             <button>
-//                               <Edit />
-//                             </button>
-//                           </DialogTrigger>
-//                           <EditClient client={client} />
-//                         </Dialog>
-//                         <DeleteClients client={client} />
-//                       </TableCell>
-//                     </TableRow>
-//                   );
-//                 })}
-//               </TableBody>
-//             </Table>
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// }

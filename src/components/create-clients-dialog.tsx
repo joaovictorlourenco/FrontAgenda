@@ -22,6 +22,9 @@ import { createClient } from "@/services/clients";
 import userStore from "@/store/userStore";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/lib/react-query";
+import { formatCpfCnpj } from "@/utils/formatCpfCnpj";
+import { type } from "os";
+import { formatCelular } from "@/utils/formatCelular";
 
 const createClientSchema = z.object({
   name: z.string().max(255),
@@ -81,7 +84,16 @@ export default function CreateClientsDialog() {
           <Label htmlFor="cpf" className="text-right">
             CPF
           </Label>
-          <Input {...register("cpf")} type="text" className="col-span-3" />
+          <Input
+            {...register("cpf")}
+            type="text"
+            onChange={(e) => {
+              const { value } = e.target;
+              e.target.value = formatCpfCnpj(value);
+            }}
+            maxLength={14}
+            className="col-span-3"
+          />
           {errors.cpf && (
             <span className="text-red-500 text-sm col-span-4">
               {errors.cpf.message}
@@ -96,7 +108,12 @@ export default function CreateClientsDialog() {
           <Input
             {...register("cellphone")}
             type="text"
+            onChange={(e) => {
+              const { value } = e.target;
+              e.target.value = formatCelular(value);
+            }}
             className="col-span-3"
+            maxLength={15}
           />
         </div>
 
