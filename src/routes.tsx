@@ -7,12 +7,10 @@ import {
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Servicos from "./pages/Servicos";
-import Veiculos from "./pages/Veiculos";
+import Veiculos from "./pages/Vehicles";
 import Clientes from "./pages/Clientes";
 import Cadastro from "./pages/Cadastro";
 import ProtectRoutes from "./pages/Protect";
-import { useEffect, useState } from "react";
-import userStore from "./store/userStore";
 
 function App() {
   return (

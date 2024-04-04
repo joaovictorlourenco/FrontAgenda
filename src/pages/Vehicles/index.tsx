@@ -1,3 +1,6 @@
+import CreateVehicleDialog from "@/components/create-vehicles";
+import DeleteVehicles from "@/components/delete-vehicles";
+import EditVehicles from "@/components/edit-vehicles";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
@@ -10,22 +13,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getAllClients } from "@/services/clients";
+
+import VehiclesFilter from "@/components/vehicles-filters";
+import { getAllVehicles } from "@/services/vehicles";
 import userStore from "@/store/userStore";
-
 import { useQuery } from "@tanstack/react-query";
-
 import { Edit, PlusCircle } from "lucide-react";
 
-import CreateClientsDialog from "@/components/create-clients-dialog";
-import { ClientsFilters } from "@/components/clients-filters";
-import { DeleteClients } from "@/components/delete-clients";
-import { EditClient } from "@/components/edit-clients";
-
-export default function Clientes() {
-  const { data: clients } = useQuery({
-    queryKey: ["clients"],
-    queryFn: () => getAllClients(userStore.getState().token),
+export default function Veiculos() {
+  const { data: vehicles } = useQuery({
+    queryKey: ["vehicles"],
+    queryFn: () => getAllVehicles(userStore.getState().token),
   });
 
   return (
@@ -33,36 +31,40 @@ export default function Clientes() {
       <Header />
       <div className="h-full">
         <div className="p-6 max-w-6xl mx-auto space-y-4">
-          <h1 className="text-3xl font-bold">Clientes</h1>
+          <h1 className="text-3xl font-bold">Veículos</h1>
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
-              <ClientsFilters />
+              <VehiclesFilter />
 
               <Dialog>
                 <DialogTrigger asChild>
                   <Button>
                     <PlusCircle className="w-4 h-4 mr-2" />
-                    Novo Cliente
+                    Novo Veículo
                   </Button>
                 </DialogTrigger>
 
-                <CreateClientsDialog />
+                <CreateVehicleDialog />
               </Dialog>
             </div>
             <Table className="border rounded-lg p-2">
               <TableHeader>
-                <TableHead className="text-slate-900">Nome</TableHead>
-                <TableHead className="text-slate-900">CPF</TableHead>
-                <TableHead className="text-slate-900">Telefone</TableHead>
+                <TableHead className="text-slate-900">Marca</TableHead>
+                <TableHead className="text-slate-900">Modelo</TableHead>
+                <TableHead className="text-slate-900">Tipo</TableHead>
+                <TableHead className="text-slate-900">Ano</TableHead>
                 <TableHead className="text-slate-900">Ações</TableHead>
               </TableHeader>
               <TableBody>
-                {clients?.map((client) => {
+                {vehicles?.map((vehicle) => {
                   return (
-                    <TableRow key={client.id}>
-                      <TableCell>{client.name}</TableCell>
-                      <TableCell>{client.cpf}</TableCell>
-                      <TableCell>{client.cellphone}</TableCell>
+                    <TableRow key={vehicle.id}>
+                      <TableCell>{vehicle.model}</TableCell>
+                      <TableCell>{vehicle.brand}</TableCell>
+                      <TableCell>
+                        {vehicle.type === "car" ? "Carro" : "Moto"}
+                      </TableCell>
+                      <TableCell>{vehicle.year}</TableCell>
                       <TableCell className="flex gap-1">
                         <Dialog>
                           <DialogTrigger asChild>
@@ -70,9 +72,9 @@ export default function Clientes() {
                               <Edit />
                             </button>
                           </DialogTrigger>
-                          <EditClient client={client} />
+                          <EditVehicles vehicle={vehicle} />
                         </Dialog>
-                        <DeleteClients client={client} />
+                        <DeleteVehicles vehicle={vehicle} />
                       </TableCell>
                     </TableRow>
                   );
